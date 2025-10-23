@@ -1,0 +1,122 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us resolve the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe the bug...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Minimal code example to reproduce the issue
+      placeholder: |
+        ```python
+        from kubera import KuberaClient
+
+        client = KuberaClient()
+        # Add minimal code to reproduce the issue
+        ```
+      render: python
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Describe what should happen...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened? Include full error messages and stack traces.
+      placeholder: |
+        Error message:
+        ```
+        Paste full error and stack trace here
+        ```
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      description: "Output of `python --version`"
+      placeholder: "e.g., Python 3.11.5"
+    validations:
+      required: true
+
+  - type: input
+    id: package-version
+    attributes:
+      label: Package Version
+      description: "Output of `pip show kubera-api | grep Version`"
+      placeholder: "e.g., 0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: What OS are you using?
+      placeholder: "e.g., macOS 14.1, Ubuntu 22.04, Windows 11"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: api-context
+    attributes:
+      label: API Context
+      description: What were you trying to do?
+      options:
+        - List portfolios
+        - Get portfolio details
+        - Update an item
+        - Using the CLI
+        - Authentication
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: |
+        Add any other context about the problem here:
+        - Does this happen consistently or intermittently?
+        - Did this work in a previous version?
+        - Any recent changes to your setup?
+      placeholder: Additional information...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have included all required information above
+          required: true
+        - label: I have tested with the latest version from GitHub
+          required: false

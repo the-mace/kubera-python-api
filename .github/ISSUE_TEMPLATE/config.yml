@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions & Discussions
+    url: https://github.com/the-mace/kubera-python-api/discussions
+    about: Ask questions, share ideas, or discuss the library with the community
+  - name: Kubera API Documentation
+    url: https://www.kubera.com/
+    about: Official Kubera API documentation and support
