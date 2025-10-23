@@ -20,9 +20,7 @@ async def main() -> None:
 
             for portfolio in portfolio_data:
                 net_worth = portfolio.get("net_worth", {})
-                print(
-                    f"{portfolio['name']}: {net_worth.get('amount', 0)} {portfolio['currency']}"
-                )
+                print(f"{portfolio['name']}: {net_worth.get('amount', 0)} {portfolio['currency']}")
 
         # Update an item asynchronously
         # item_id = "your_asset_or_debt_id"

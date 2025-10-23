@@ -48,10 +48,10 @@ def load_portfolio_cache() -> list[dict[str, Any]]:
         return []
 
     try:
-        with open(cache_file, "r") as f:
+        with open(cache_file) as f:
             cache_data = json.load(f)
             return cache_data.get("portfolios", [])
-    except (json.JSONDecodeError, IOError):
+    except (json.JSONDecodeError, OSError):
         return []
 
 

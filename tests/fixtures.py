@@ -2,21 +2,9 @@
 
 # Portfolio list response (GET /api/v3/data/portfolio)
 PORTFOLIOS_LIST_RESPONSE = [
-    {
-        "id": "portfolio_001",
-        "name": "Test Portfolio 1",
-        "currency": "USD"
-    },
-    {
-        "id": "portfolio_002",
-        "name": "Test Portfolio 2",
-        "currency": "EUR"
-    },
-    {
-        "id": "portfolio_003",
-        "name": "Test Portfolio 3",
-        "currency": "GBP"
-    }
+    {"id": "portfolio_001", "name": "Test Portfolio 1", "currency": "USD"},
+    {"id": "portfolio_002", "name": "Test Portfolio 2", "currency": "EUR"},
+    {"id": "portfolio_003", "name": "Test Portfolio 3", "currency": "GBP"},
 ]
 
 # Detailed portfolio response (GET /api/v3/data/portfolio/{id})
@@ -32,10 +20,7 @@ PORTFOLIO_DETAIL_RESPONSE = {
             "sheetId": "sheet_001",
             "sheetName": "Banks",
             "category": "asset",
-            "value": {
-                "amount": 5000.00,
-                "currency": "USD"
-            },
+            "value": {"amount": 5000.00, "currency": "USD"},
             "ticker": "USD",
             "tickerId": 150,
             "tickerSector": "Other",
@@ -49,19 +34,16 @@ PORTFOLIO_DETAIL_RESPONSE = {
                 "providerName": "Test Bank",
                 "lastUpdated": None,
                 "id": "connection_001",
-                "accountId": "account_001"
+                "accountId": "account_001",
             },
             "liquidity": "high",
             "sector": "other",
-            "geography": {
-                "country": "usa",
-                "region": "other"
-            },
+            "geography": {"country": "usa", "region": "other"},
             "assetClass": "cash",
             "type": "bank",
             "purchaseDate": "2024-01-15",
             "holdingPeriodInDays": 100,
-            "isManual": False
+            "isManual": False,
         },
         # Stock example with parent account
         {
@@ -72,10 +54,7 @@ PORTFOLIO_DETAIL_RESPONSE = {
             "sheetId": "sheet_002",
             "sheetName": "Investments",
             "category": "asset",
-            "value": {
-                "amount": 15000.00,
-                "currency": "USD"
-            },
+            "value": {"amount": 15000.00, "currency": "USD"},
             "ticker": "AAPL",
             "tickerId": 12345,
             "tickerSubType": "cs",
@@ -87,32 +66,23 @@ PORTFOLIO_DETAIL_RESPONSE = {
             "isin": "US0378331005",
             "subType": "stock",
             "holdingsCount": 0,
-            "rate": {
-                "price": 150.00,
-                "currency": "USD"
-            },
+            "rate": {"price": 150.00, "currency": "USD"},
             "connection": {
                 "aggregator": "yodlee",
                 "providerName": "Test Brokerage",
                 "lastUpdated": "2024-10-23T18:58:00.000Z",
                 "id": "connection_002",
-                "accountId": "account_002"
+                "accountId": "account_002",
             },
-            "parent": {
-                "id": "asset_002",
-                "name": "Brokerage Account - 5678"
-            },
+            "parent": {"id": "asset_002", "name": "Brokerage Account - 5678"},
             "liquidity": "high",
             "sector": "technology",
-            "geography": {
-                "country": "usa",
-                "region": "north america"
-            },
+            "geography": {"country": "usa", "region": "north america"},
             "assetClass": "stock",
             "type": "investment",
             "purchaseDate": "2024-04-10",
             "holdingPeriodInDays": 196,
-            "isManual": True
+            "isManual": True,
         },
         # Mutual fund example with cost basis and tax info
         {
@@ -123,10 +93,7 @@ PORTFOLIO_DETAIL_RESPONSE = {
             "sheetId": "sheet_002",
             "sheetName": "Investments",
             "category": "asset",
-            "value": {
-                "amount": 50000.00,
-                "currency": "USD"
-            },
+            "value": {"amount": 50000.00, "currency": "USD"},
             "ticker": "TESTHYX",
             "tickerId": 387965,
             "tickerSubType": "oef",
@@ -139,47 +106,29 @@ PORTFOLIO_DETAIL_RESPONSE = {
             "isin": "US0231351067",
             "subType": "mutual fund",
             "holdingsCount": 0,
-            "rate": {
-                "price": 10.00,
-                "currency": "USD"
-            },
-            "cost": {
-                "amount": 48000.00,
-                "currency": "USD"
-            },
-            "costBasisForTax": {
-                "amount": 48000.00,
-                "currency": "USD"
-            },
+            "rate": {"price": 10.00, "currency": "USD"},
+            "cost": {"amount": 48000.00, "currency": "USD"},
+            "costBasisForTax": {"amount": 48000.00, "currency": "USD"},
             "taxRate": 30,
             "taxStatus": "taxable",
-            "taxOnUnrealizedGain": {
-                "amount": 600.00,
-                "currency": "USD"
-            },
+            "taxOnUnrealizedGain": {"amount": 600.00, "currency": "USD"},
             "connection": {
                 "aggregator": "yodlee",
                 "providerName": "Test Brokerage",
                 "lastUpdated": "2024-10-23T19:07:22.000Z",
                 "id": "connection_002",
-                "accountId": "account_003"
+                "accountId": "account_003",
             },
-            "parent": {
-                "id": "asset_003",
-                "name": "Investment Account - 9012"
-            },
+            "parent": {"id": "asset_003", "name": "Investment Account - 9012"},
             "liquidity": "high",
             "sector": "other",
-            "geography": {
-                "country": "usa",
-                "region": "north america"
-            },
+            "geography": {"country": "usa", "region": "north america"},
             "assetClass": "fund",
             "type": "investment",
             "purchaseDate": "2024-06-18",
             "holdingPeriodInDays": 127,
-            "isManual": True
-        }
+            "isManual": True,
+        },
     ],
     "debt": [
         # Mortgage example
@@ -191,10 +140,7 @@ PORTFOLIO_DETAIL_RESPONSE = {
             "sheetId": "sheet_003",
             "sheetName": "Debts",
             "category": "debt",
-            "value": {
-                "amount": 250000.00,
-                "currency": "USD"
-            },
+            "value": {"amount": 250000.00, "currency": "USD"},
             "investable": "non_investable",
             "ownership": 1,
             "subType": "mortgage",
@@ -203,10 +149,10 @@ PORTFOLIO_DETAIL_RESPONSE = {
                 "providerName": "Test Mortgage Co",
                 "lastUpdated": None,
                 "id": "connection_003",
-                "accountId": "account_004"
+                "accountId": "account_004",
             },
             "type": "debt",
-            "isManual": False
+            "isManual": False,
         }
     ],
     "insurance": [
@@ -219,69 +165,37 @@ PORTFOLIO_DETAIL_RESPONSE = {
             "sheetId": "sheet_004",
             "sheetName": "Insurance",
             "category": "insurance",
-            "value": {
-                "amount": 500000.00,
-                "currency": "USD"
-            },
+            "value": {"amount": 500000.00, "currency": "USD"},
             "subType": "life",
             "type": "insurance",
-            "isManual": True
+            "isManual": True,
         }
     ],
-    "netWorth": {
-        "amount": 320000.00,
-        "currency": "USD"
-    },
-    "totalAssets": {
-        "amount": 570000.00,
-        "currency": "USD"
-    },
-    "totalDebts": {
-        "amount": 250000.00,
-        "currency": "USD"
-    }
+    "netWorth": {"amount": 320000.00, "currency": "USD"},
+    "totalAssets": {"amount": 570000.00, "currency": "USD"},
+    "totalDebts": {"amount": 250000.00, "currency": "USD"},
 }
 
 # Update item response (POST /api/v3/data/item/{id})
 UPDATE_ITEM_RESPONSE = {
     "id": "asset_001",
     "name": "Updated Item Name",
-    "value": {
-        "amount": 5500.00,
-        "currency": "USD"
-    },
+    "value": {"amount": 5500.00, "currency": "USD"},
     "description": "Updated description",
-    "cost": {
-        "amount": 5000.00,
-        "currency": "USD"
-    }
+    "cost": {"amount": 5000.00, "currency": "USD"},
 }
 
 # Error response examples
-ERROR_RESPONSE_401 = {
-    "errorCode": 401,
-    "message": "Invalid credentials"
-}
+ERROR_RESPONSE_401 = {"errorCode": 401, "message": "Invalid credentials"}
 
-ERROR_RESPONSE_403 = {
-    "errorCode": 403,
-    "message": "Insufficient permissions"
-}
+ERROR_RESPONSE_403 = {"errorCode": 403, "message": "Insufficient permissions"}
 
-ERROR_RESPONSE_429 = {
-    "errorCode": 429,
-    "message": "Rate limit exceeded"
-}
+ERROR_RESPONSE_429 = {"errorCode": 429, "message": "Rate limit exceeded"}
 
-ERROR_RESPONSE_400 = {
-    "errorCode": 400,
-    "message": "Invalid request data"
-}
+ERROR_RESPONSE_400 = {"errorCode": 400, "message": "Invalid request data"}
+
 
 # Wrapped API response format (actual API wraps data in {"data": ..., "errorCode": 0})
 def wrap_api_response(data):
     """Wrap data in the standard Kubera API response format."""
-    return {
-        "data": data,
-        "errorCode": 0
-    }
+    return {"data": data, "errorCode": 0}

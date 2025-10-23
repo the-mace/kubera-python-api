@@ -188,9 +188,7 @@ class KuberaClient:
                 " Note: Update operations require an API key with update permissions enabled. "
                 "Read-only API keys cannot modify data."
             )
-            raise KuberaAPIError(
-                f"Permission denied: {error_message}.{hint}", response.status_code
-            )
+            raise KuberaAPIError(f"Permission denied: {error_message}.{hint}", response.status_code)
         elif response.status_code == 429:
             raise KuberaRateLimitError(
                 f"Rate limit exceeded: {error_message}. "
@@ -198,9 +196,7 @@ class KuberaClient:
                 response.status_code,
             )
         elif response.status_code == 400:
-            raise KuberaValidationError(
-                f"Validation error: {error_message}", response.status_code
-            )
+            raise KuberaValidationError(f"Validation error: {error_message}", response.status_code)
         else:
             raise KuberaAPIError(
                 f"API error ({response.status_code}): {error_message}", response.status_code

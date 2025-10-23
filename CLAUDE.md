@@ -208,3 +208,5 @@ All endpoints use `https://api.kubera.com` as base URL:
 - Line length: 100 characters
 - Use Ruff for formatting and linting
 - Docstrings required for all public methods
+- Always run the lint and unit tests before pushing any code. Squash merges on branches too.
+- Always include claude.md changes with commits when it has been updated

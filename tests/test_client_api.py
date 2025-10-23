@@ -1,8 +1,9 @@
 """Tests for Kubera client API methods using real response fixtures."""
 
-import pytest
-import httpx
 from unittest.mock import Mock, patch
+
+import httpx
+import pytest
 
 from kubera import KuberaClient
 from kubera.exceptions import (
@@ -12,13 +13,13 @@ from kubera.exceptions import (
     KuberaValidationError,
 )
 from tests.fixtures import (
-    PORTFOLIOS_LIST_RESPONSE,
-    PORTFOLIO_DETAIL_RESPONSE,
-    UPDATE_ITEM_RESPONSE,
+    ERROR_RESPONSE_400,
     ERROR_RESPONSE_401,
     ERROR_RESPONSE_403,
     ERROR_RESPONSE_429,
-    ERROR_RESPONSE_400,
+    PORTFOLIO_DETAIL_RESPONSE,
+    PORTFOLIOS_LIST_RESPONSE,
+    UPDATE_ITEM_RESPONSE,
     wrap_api_response,
 )
 
@@ -32,12 +33,14 @@ def client():
 @pytest.fixture
 def mock_response():
     """Create a mock HTTP response."""
+
     def _mock_response(status_code=200, json_data=None):
         response = Mock(spec=httpx.Response)
         response.status_code = status_code
         response.json.return_value = json_data or {}
         response.text = str(json_data) if json_data else ""
         return response
+
     return _mock_response
 
 
@@ -48,7 +51,7 @@ class TestGetPortfolios:
         """Test successful portfolio list retrieval."""
         response = mock_response(200, wrap_api_response(PORTFOLIOS_LIST_RESPONSE))
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             portfolios = client.get_portfolios()
 
         assert len(portfolios) == 3
@@ -62,7 +65,7 @@ class TestGetPortfolios:
         """Test portfolio list when no portfolios exist."""
         response = mock_response(200, wrap_api_response([]))
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             portfolios = client.get_portfolios()
 
         assert portfolios == []
@@ -71,7 +74,7 @@ class TestGetPortfolios:
         """Test portfolio list with authentication error."""
         response = mock_response(401, ERROR_RESPONSE_401)
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             with pytest.raises(KuberaAuthenticationError) as exc_info:
                 client.get_portfolios()
 
@@ -86,7 +89,7 @@ class TestGetPortfolio:
         """Test successful portfolio detail retrieval."""
         response = mock_response(200, wrap_api_response(PORTFOLIO_DETAIL_RESPONSE))
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             portfolio = client.get_portfolio("portfolio_001")
 
         # Check structure
@@ -139,7 +142,7 @@ class TestGetPortfolio:
         error_response = {"errorCode": 404, "message": "Portfolio not found"}
         response = mock_response(404, error_response)
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             with pytest.raises(KuberaAPIError) as exc_info:
                 client.get_portfolio("nonexistent")
 
@@ -154,7 +157,7 @@ class TestUpdateItem:
         response = mock_response(200, wrap_api_response(UPDATE_ITEM_RESPONSE))
         updates = {"value": 5500.00, "description": "Updated description"}
 
-        with patch.object(client._client, 'post', return_value=response):
+        with patch.object(client._client, "post", return_value=response):
             result = client.update_item("asset_001", updates)
 
         assert result["id"] == "asset_001"
@@ -167,7 +170,7 @@ class TestUpdateItem:
         response = mock_response(200, wrap_api_response(UPDATE_ITEM_RESPONSE))
         updates = {"value": 5500.00}
 
-        with patch.object(client._client, 'post', return_value=response):
+        with patch.object(client._client, "post", return_value=response):
             result = client.update_item("asset_001", updates)
 
         assert result is not None
@@ -177,7 +180,7 @@ class TestUpdateItem:
         response = mock_response(403, ERROR_RESPONSE_403)
         updates = {"value": 5500.00}
 
-        with patch.object(client._client, 'post', return_value=response):
+        with patch.object(client._client, "post", return_value=response):
             with pytest.raises(KuberaAPIError) as exc_info:
                 client.update_item("asset_001", updates)
 
@@ -190,7 +193,7 @@ class TestUpdateItem:
         response = mock_response(400, ERROR_RESPONSE_400)
         updates = {"value": "invalid"}
 
-        with patch.object(client._client, 'post', return_value=response):
+        with patch.object(client._client, "post", return_value=response):
             with pytest.raises(KuberaValidationError) as exc_info:
                 client.update_item("asset_001", updates)
 
@@ -205,7 +208,7 @@ class TestErrorHandling:
         """Test rate limit exceeded error."""
         response = mock_response(429, ERROR_RESPONSE_429)
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             with pytest.raises(KuberaRateLimitError) as exc_info:
                 client.get_portfolios()
 
@@ -218,7 +221,7 @@ class TestErrorHandling:
         error_response = {"errorCode": 500, "message": "Internal server error"}
         response = mock_response(500, error_response)
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             with pytest.raises(KuberaAPIError) as exc_info:
                 client.get_portfolios()
 
@@ -232,7 +235,7 @@ class TestErrorHandling:
         response.text = "Internal Server Error"
         response.json.side_effect = Exception("Not JSON")
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             with pytest.raises(KuberaAPIError) as exc_info:
                 client.get_portfolios()
 
@@ -247,7 +250,7 @@ class TestResponseHandling:
         wrapped = wrap_api_response(PORTFOLIOS_LIST_RESPONSE)
         response = mock_response(200, wrapped)
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             portfolios = client.get_portfolios()
 
         # Should extract the "data" field
@@ -257,7 +260,7 @@ class TestResponseHandling:
         """Test handling of response without data wrapper."""
         response = mock_response(200, PORTFOLIOS_LIST_RESPONSE)
 
-        with patch.object(client._client, 'get', return_value=response):
+        with patch.object(client._client, "get", return_value=response):
             portfolios = client.get_portfolios()
 
         # Should work even without wrapper

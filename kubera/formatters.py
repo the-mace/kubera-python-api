@@ -41,7 +41,7 @@ def format_number(value: float | int | str) -> str:
             return str(value)
     if isinstance(value, float):
         # Remove trailing zeros after decimal point
-        formatted = f"{value:,.4f}".rstrip('0').rstrip('.')
+        formatted = f"{value:,.4f}".rstrip("0").rstrip(".")
         return formatted
     return f"{value:,}"
 
@@ -78,7 +78,9 @@ def print_portfolios(portfolios: list[dict[str, Any]], raw: bool = False) -> Non
         )
 
     console.print(table)
-    console.print("\n[dim]Tip: Use the index number (e.g., 'kubera show 1') instead of the full ID[/dim]")
+    console.print(
+        "\n[dim]Tip: Use the index number (e.g., 'kubera show 1') instead of the full ID[/dim]"
+    )
 
 
 def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
@@ -114,7 +116,9 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
     assets = portfolio.get("asset", portfolio.get("assets", []))
     if assets:
         asset_total = portfolio.get("assetTotal")
-        total_str = f" - Total: {format_currency(asset_total, 'USD')}" if asset_total is not None else ""
+        total_str = (
+            f" - Total: {format_currency(asset_total, 'USD')}" if asset_total is not None else ""
+        )
         console.print(f"\n[bold]Assets ({len(assets)} items){total_str}[/bold]")
 
         # Group by sheet
@@ -138,11 +142,7 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
 
         for sheet_name, (items, total) in by_sheet.items():
             currency = items[0].get("value", {}).get("currency", "USD") if items else "USD"
-            sheet_table.add_row(
-                sheet_name,
-                str(len(items)),
-                format_currency(total, currency)
-            )
+            sheet_table.add_row(sheet_name, str(len(items)), format_currency(total, currency))
 
         console.print(sheet_table)
 
@@ -150,7 +150,9 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
     debts = portfolio.get("debt", portfolio.get("debts", []))
     if debts:
         debt_total = portfolio.get("debtTotal")
-        total_str = f" - Total: {format_currency(debt_total, 'USD')}" if debt_total is not None else ""
+        total_str = (
+            f" - Total: {format_currency(debt_total, 'USD')}" if debt_total is not None else ""
+        )
         console.print(f"\n[bold]Debts ({len(debts)} items){total_str}[/bold]")
 
         # Group by sheet
@@ -174,11 +176,7 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
 
         for sheet_name, (items, total) in by_sheet_debt.items():
             currency = items[0].get("value", {}).get("currency", "USD") if items else "USD"
-            debt_sheet_table.add_row(
-                sheet_name,
-                str(len(items)),
-                format_currency(total, currency)
-            )
+            debt_sheet_table.add_row(sheet_name, str(len(items)), format_currency(total, currency))
 
         console.print(debt_sheet_table)
 
@@ -212,9 +210,7 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
             for sheet_name, (items, total) in by_sheet_ins.items():
                 currency = items[0].get("value", {}).get("currency", "USD") if items else "USD"
                 ins_sheet_table.add_row(
-                    sheet_name,
-                    str(len(items)),
-                    format_currency(total, currency)
+                    sheet_name, str(len(items)), format_currency(total, currency)
                 )
 
             console.print(ins_sheet_table)
@@ -357,7 +353,11 @@ def print_success(message: str) -> None:
 
 
 def print_sheet_detail(
-    items: list[dict[str, Any]], sheet_name: str, category: str, portfolio_name: str, raw: bool = False
+    items: list[dict[str, Any]],
+    sheet_name: str,
+    category: str,
+    portfolio_name: str,
+    raw: bool = False,
 ) -> None:
     """Print detailed information for items in a sheet.
 
@@ -386,7 +386,9 @@ def print_sheet_detail(
 
     # Calculate totals (excluding parent accounts)
     total_value = sum(item.get("value", {}).get("amount", 0) or 0 for item in items_for_totals)
-    total_cost = sum(item.get("cost", {}).get("amount", 0) or 0 for item in items_for_totals if "cost" in item)
+    total_cost = sum(
+        item.get("cost", {}).get("amount", 0) or 0 for item in items_for_totals if "cost" in item
+    )
 
     # Overall gains
     if total_cost > 0:
@@ -397,7 +399,8 @@ def print_sheet_detail(
         console.print(
             f"\n[bold]Total Value:[/bold] {format_currency(total_value, 'USD')} | "
             f"[bold]Cost Basis:[/bold] {format_currency(total_cost, 'USD')} | "
-            f"[bold {gain_color}]Gain:[/bold {gain_color}] {gain_sign}{format_currency(total_gain, 'USD')} "
+            f"[bold {gain_color}]Gain:[/bold {gain_color}] "
+            f"{gain_sign}{format_currency(total_gain, 'USD')} "
             f"({gain_sign}{total_gain_pct:.2f}%)"
         )
     else:
@@ -412,13 +415,17 @@ def print_sheet_detail(
                 by_section[section] = []
             by_section[section].append(item)
 
-    console.print(f"\n[dim]Total Items: {len(items_for_totals)} across {len(by_section)} section(s)[/dim]")
+    console.print(
+        f"\n[dim]Total Items: {len(items_for_totals)} across {len(by_section)} section(s)[/dim]"
+    )
 
     # Display each section
     for section_name, section_items in by_section.items():
         # Section header with totals (items already filtered, no parents)
         section_value = sum(item.get("value", {}).get("amount", 0) or 0 for item in section_items)
-        section_cost = sum(item.get("cost", {}).get("amount", 0) or 0 for item in section_items if "cost" in item)
+        section_cost = sum(
+            item.get("cost", {}).get("amount", 0) or 0 for item in section_items if "cost" in item
+        )
 
         console.print(f"\n[bold yellow]{section_name}[/bold yellow] ({len(section_items)} items)")
 
@@ -439,7 +446,9 @@ def print_sheet_detail(
         # Detect which columns have data in this section
         has_ticker = any(item.get("ticker") for item in section_items)
         has_quantity = any(item.get("quantity") for item in section_items)
-        has_cost = any("cost" in item and item.get("cost", {}).get("amount") for item in section_items)
+        has_cost = any(
+            "cost" in item and item.get("cost", {}).get("amount") for item in section_items
+        )
 
         # Create table for this section with only relevant columns
         table = Table(show_header=True, show_lines=False, box=None)
@@ -490,7 +499,10 @@ def print_sheet_detail(
                         gain_color = "green" if gain >= 0 else "red"
                         gain_sign = "+" if gain >= 0 else ""
 
-                        gain_str = f"[{gain_color}]{gain_sign}{format_currency(gain, currency)}[/{gain_color}]"
+                        gain_str = (
+                            f"[{gain_color}]{gain_sign}"
+                            f"{format_currency(gain, currency)}[/{gain_color}]"
+                        )
                         gain_pct_str = f"[{gain_color}]{gain_sign}{gain_pct:.2f}%[/{gain_color}]"
 
                 row.extend([cost_str, gain_str, gain_pct_str])

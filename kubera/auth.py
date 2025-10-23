@@ -40,9 +40,7 @@ def generate_signature(
     data = f"{api_key}{timestamp}{http_method}{request_path}{body_data}"
 
     # Generate HMAC-SHA256 signature
-    signature = hmac.new(
-        secret.encode("utf-8"), data.encode("utf-8"), hashlib.sha256
-    ).hexdigest()
+    signature = hmac.new(secret.encode("utf-8"), data.encode("utf-8"), hashlib.sha256).hexdigest()
 
     return signature, timestamp
 

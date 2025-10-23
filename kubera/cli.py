@@ -1,10 +1,11 @@
 """Command-line interface for Kubera API."""
 
 import sys
+from typing import Any
 
 import click
 
-from kubera.cache import load_portfolio_cache, resolve_portfolio_id, save_portfolio_cache
+from kubera.cache import resolve_portfolio_id, save_portfolio_cache
 from kubera.client import KuberaClient
 from kubera.exceptions import KuberaAPIError
 from kubera.formatters import (
@@ -90,7 +91,7 @@ def list(ctx: click.Context, raw: bool) -> None:
     try:
         portfolios = client.get_portfolios()
         # Save to cache for index-based lookups
-        save_portfolio_cache(portfolios)
+        save_portfolio_cache(portfolios)  # type: ignore[arg-type]
         print_portfolios(portfolios, raw=raw)  # type: ignore[arg-type]
     except KuberaAPIError as e:
         print_error(f"Failed to fetch portfolios: {e.message}")
@@ -153,9 +154,7 @@ def show(ctx: click.Context, portfolio_id: str, raw: bool, tree: bool) -> None:
 @click.argument("sheet_name")
 @click.option("--raw", is_flag=True, help="Output raw JSON instead of formatted text")
 @click.pass_context
-def drill(
-    ctx: click.Context, portfolio_id: str, category: str, sheet_name: str, raw: bool
-) -> None:
+def drill(ctx: click.Context, portfolio_id: str, category: str, sheet_name: str, raw: bool) -> None:
     """Drill down into a specific sheet within a category.
 
     Shows detailed information for all items in a specific sheet, including:
@@ -189,6 +188,7 @@ def drill(
         portfolio = client.get_portfolio(resolved_id)
 
         # Get the items from the specified category
+        items: Any
         if category.lower() == "asset":
             items = portfolio.get("asset", portfolio.get("assets", []))
         elif category.lower() == "debt":
@@ -203,7 +203,8 @@ def drill(
         sheet_items = [
             item
             for item in items
-            if item.get("sheetName", "").lower() == sheet_name.lower()
+            if isinstance(item.get("sheetName"), str)
+            and item.get("sheetName", "").lower() == sheet_name.lower()
         ]
 
         if not sheet_items:
@@ -312,7 +313,7 @@ def test(ctx: click.Context, raw: bool) -> None:
         portfolios = client.get_portfolios()
 
         if not raw:
-            print_success(f"✓ Successfully connected to Kubera API!")
+            print_success("✓ Successfully connected to Kubera API!")
             print_success(f"✓ Found {len(portfolios)} portfolio(s)")
 
             if portfolios:
@@ -418,7 +419,7 @@ def interactive(ctx: click.Context) -> None:
             return
 
         # Save to cache and show portfolios
-        save_portfolio_cache(portfolios)
+        save_portfolio_cache(portfolios)  # type: ignore[arg-type]
         print_portfolios(portfolios)  # type: ignore[arg-type]
 
         # Let user choose a portfolio

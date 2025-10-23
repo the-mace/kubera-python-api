@@ -1,8 +1,9 @@
 """Tests for Kubera client async API methods."""
 
-import pytest
+from unittest.mock import AsyncMock, Mock, patch
+
 import httpx
-from unittest.mock import Mock, AsyncMock, patch
+import pytest
 
 from kubera import KuberaClient
 from kubera.exceptions import (
@@ -10,10 +11,10 @@ from kubera.exceptions import (
     KuberaAuthenticationError,
 )
 from tests.fixtures import (
-    PORTFOLIOS_LIST_RESPONSE,
-    PORTFOLIO_DETAIL_RESPONSE,
-    UPDATE_ITEM_RESPONSE,
     ERROR_RESPONSE_401,
+    PORTFOLIO_DETAIL_RESPONSE,
+    PORTFOLIOS_LIST_RESPONSE,
+    UPDATE_ITEM_RESPONSE,
     wrap_api_response,
 )
 
@@ -27,12 +28,14 @@ def client():
 @pytest.fixture
 def mock_async_response():
     """Create a mock async HTTP response."""
+
     def _mock_response(status_code=200, json_data=None):
         response = Mock(spec=httpx.Response)
         response.status_code = status_code
         response.json.return_value = json_data or {}
         response.text = str(json_data) if json_data else ""
         return response
+
     return _mock_response
 
 
@@ -47,7 +50,7 @@ class TestAsyncGetPortfolios:
         mock_client = AsyncMock(spec=httpx.AsyncClient)
         mock_client.get.return_value = response
 
-        with patch.object(client, '_get_async_client', return_value=mock_client):
+        with patch.object(client, "_get_async_client", return_value=mock_client):
             portfolios = await client.aget_portfolios()
 
         assert len(portfolios) == 3
@@ -61,7 +64,7 @@ class TestAsyncGetPortfolios:
         mock_client = AsyncMock(spec=httpx.AsyncClient)
         mock_client.get.return_value = response
 
-        with patch.object(client, '_get_async_client', return_value=mock_client):
+        with patch.object(client, "_get_async_client", return_value=mock_client):
             portfolios = await client.aget_portfolios()
 
         assert portfolios == []
@@ -73,7 +76,7 @@ class TestAsyncGetPortfolios:
         mock_client = AsyncMock(spec=httpx.AsyncClient)
         mock_client.get.return_value = response
 
-        with patch.object(client, '_get_async_client', return_value=mock_client):
+        with patch.object(client, "_get_async_client", return_value=mock_client):
             with pytest.raises(KuberaAuthenticationError):
                 await client.aget_portfolios()
 
@@ -89,7 +92,7 @@ class TestAsyncGetPortfolio:
         mock_client = AsyncMock(spec=httpx.AsyncClient)
         mock_client.get.return_value = response
 
-        with patch.object(client, '_get_async_client', return_value=mock_client):
+        with patch.object(client, "_get_async_client", return_value=mock_client):
             portfolio = await client.aget_portfolio("portfolio_001")
 
         assert "asset" in portfolio
@@ -104,7 +107,7 @@ class TestAsyncGetPortfolio:
         mock_client = AsyncMock(spec=httpx.AsyncClient)
         mock_client.get.return_value = response
 
-        with patch.object(client, '_get_async_client', return_value=mock_client):
+        with patch.object(client, "_get_async_client", return_value=mock_client):
             with pytest.raises(KuberaAPIError) as exc_info:
                 await client.aget_portfolio("nonexistent")
 
@@ -123,7 +126,7 @@ class TestAsyncUpdateItem:
         mock_client = AsyncMock(spec=httpx.AsyncClient)
         mock_client.post.return_value = response
 
-        with patch.object(client, '_get_async_client', return_value=mock_client):
+        with patch.object(client, "_get_async_client", return_value=mock_client):
             result = await client.aupdate_item("asset_001", updates)
 
         assert result["id"] == "asset_001"
