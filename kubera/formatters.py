@@ -121,6 +121,9 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
         )
         console.print(f"\n[bold]Assets ({len(assets)} items){total_str}[/bold]")
 
+        # Filter out parent accounts to avoid double-counting
+        parent_ids = {asset.get("parent", {}).get("id") for asset in assets if "parent" in asset}
+
         # Group by sheet
         by_sheet: dict[str, tuple[list[Any], float]] = {}
         for asset in assets:
@@ -132,7 +135,11 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
                 by_sheet[sheet] = ([], 0)
             items, total = by_sheet[sheet]
             items.append(asset)
-            by_sheet[sheet] = (items, total + amount)
+            # Only add to total if this is not a parent account
+            if asset.get("id") not in parent_ids:
+                by_sheet[sheet] = (items, total + amount)
+            else:
+                by_sheet[sheet] = (items, total)
 
         # Display sheets with totals
         sheet_table = Table(show_header=True, show_lines=False)
@@ -151,9 +158,14 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
     if debts:
         debt_total = portfolio.get("debtTotal")
         total_str = (
-            f" - Total: {format_currency(debt_total, 'USD')}" if debt_total is not None else ""
+            f" - Total: [red]{format_currency(debt_total, 'USD')}[/red]"
+            if debt_total is not None
+            else ""
         )
         console.print(f"\n[bold]Debts ({len(debts)} items){total_str}[/bold]")
+
+        # Filter out parent accounts to avoid double-counting
+        debt_parent_ids = {debt.get("parent", {}).get("id") for debt in debts if "parent" in debt}
 
         # Group by sheet
         by_sheet_debt: dict[str, tuple[list[Any], float]] = {}
@@ -166,7 +178,11 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
                 by_sheet_debt[sheet] = ([], 0)
             items, total = by_sheet_debt[sheet]
             items.append(debt)
-            by_sheet_debt[sheet] = (items, total + amount)
+            # Only add to total if this is not a parent account
+            if debt.get("id") not in debt_parent_ids:
+                by_sheet_debt[sheet] = (items, total + amount)
+            else:
+                by_sheet_debt[sheet] = (items, total)
 
         # Display sheets with totals
         debt_sheet_table = Table(show_header=True, show_lines=False)
@@ -176,15 +192,24 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
 
         for sheet_name, (items, total) in by_sheet_debt.items():
             currency = items[0].get("value", {}).get("currency", "USD") if items else "USD"
-            debt_sheet_table.add_row(sheet_name, str(len(items)), format_currency(total, currency))
+            debt_sheet_table.add_row(
+                sheet_name, str(len(items)), f"[red]{format_currency(total, currency)}[/red]"
+            )
 
         console.print(debt_sheet_table)
 
     # Insurance
     insurance = portfolio.get("insurance", [])
     if insurance:
+        # Filter out parent accounts to avoid double-counting
+        ins_parent_ids = {ins.get("parent", {}).get("id") for ins in insurance if "parent" in ins}
+
         # Calculate total
-        ins_total = sum(ins.get("value", {}).get("amount", 0) or 0 for ins in insurance)
+        ins_total = sum(
+            ins.get("value", {}).get("amount", 0) or 0
+            for ins in insurance
+            if ins.get("id") not in ins_parent_ids
+        )
         total_str = f" - Total: {format_currency(ins_total, 'USD')}" if ins_total else ""
         console.print(f"\n[bold]Insurance ({len(insurance)} items){total_str}[/bold]")
 
@@ -199,7 +224,11 @@ def print_portfolio(portfolio: dict[str, Any], raw: bool = False) -> None:
                 by_sheet_ins[sheet] = ([], 0)
             items, total = by_sheet_ins[sheet]
             items.append(ins)
-            by_sheet_ins[sheet] = (items, total + amount)
+            # Only add to total if this is not a parent account
+            if ins.get("id") not in ins_parent_ids:
+                by_sheet_ins[sheet] = (items, total + amount)
+            else:
+                by_sheet_ins[sheet] = (items, total)
 
         if len(by_sheet_ins) > 1:  # Only show sheets if there's more than one
             ins_sheet_table = Table(show_header=True, show_lines=False)

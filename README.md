@@ -178,6 +178,14 @@ The system automatically detects which you're using. Indexes are cached locally 
 - **Tree View** - Hierarchical visualization with `--tree`
 - **Interactive Mode** - Step-by-step exploration of portfolios
 
+### Insurance Data Note
+
+**Important:** Insurance information displayed by this library represents life insurance coverage amounts (death benefits), not the cash value or premium amounts of insurance policies. These amounts are shown separately from net worth calculations as they represent future payouts, not current assets.
+
+If you need to track the cash value of insurance policies (e.g., whole life insurance cash value), you should enter those amounts under Assets in the Kubera UI, not in the Insurance section.
+
+To view insurance information in the Kubera web UI, navigate to: **Beneficiary → Insurance**
+
 ### Drill Command Details
 
 The `drill` command provides detailed item-level information for a specific sheet:
