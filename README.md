@@ -555,6 +555,21 @@ The library implementation is based on actual API behavior and has been tested a
 
 **Note:** If you encounter response structures different from what this library expects, please file an issue with the response details.
 
+## Related Projects
+
+### Kubera Reporting
+
+[**kubera-reporting**](https://github.com/the-mace/kubera-reporting) builds on this API library to provide advanced reporting capabilities for your Kubera portfolios:
+
+- **Excel Report Generation** - Create comprehensive Excel workbooks with multiple sheets
+- **Historical Tracking** - Track portfolio changes over time
+- **Portfolio Comparisons** - Compare multiple portfolios side-by-side
+- **Automated Snapshots** - Schedule automated portfolio snapshots
+- **Custom Analytics** - Calculate additional metrics and visualizations
+- **Export Capabilities** - Generate reports in multiple formats
+
+If you need more than basic API access and want to generate reports or track your portfolio history, check out the kubera-reporting project.
+
 ## Support
 
 For API documentation and support, visit [Kubera's official documentation](https://www.kubera.com/).
