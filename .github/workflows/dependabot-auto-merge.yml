@@ -42,6 +42,7 @@ jobs:
           check-name: 'All checks passed'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 20
+          fail-on-no-checks: false
 
       - name: Auto-merge
         if: |
