@@ -35,6 +35,7 @@ jobs:
         if: |
           steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
           steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
+          steps.metadata.outputs.update-type == '' ||
           steps.metadata.outputs.package-ecosystem == 'github_actions'
         uses: lewagon/wait-on-check-action@v1.6.1
         with:
@@ -47,6 +48,7 @@ jobs:
         if: |
           steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
           steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
+          steps.metadata.outputs.update-type == '' ||
           steps.metadata.outputs.package-ecosystem == 'github_actions'
         run: |
           gh pr merge --auto --squash "$PR_URL"
