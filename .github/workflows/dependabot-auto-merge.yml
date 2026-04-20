@@ -37,7 +37,7 @@ jobs:
           steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
           steps.metadata.outputs.update-type == '' ||
           steps.metadata.outputs.package-ecosystem == 'github_actions'
-        uses: lewagon/wait-on-check-action@v1.6.1
+        uses: lewagon/wait-on-check-action@v1.7.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           check-name: 'All checks passed'
