@@ -6,6 +6,12 @@
 
 Modern, type-safe Python client for the [Kubera](https://www.kubera.com/) Data API v3.
 
+> **⚠️ Archived / No Longer Maintained**
+>
+> Kubera now offers native [MCP (Model Context Protocol)](https://www.anthropic.com/news/model-context-protocol) support, letting Claude and other AI assistants query and update your portfolio data directly without a separate client library. That covers the use case this project was built for, so this repository is no longer maintained.
+>
+> If you're currently using this library, it will keep working, but no new features or fixes are planned. Check Kubera's official documentation or in-app settings for details on connecting via MCP.
+
 ## Features
 
 - 🚀 **Modern Python** - Built with Python 3.10+ features, full type hints
